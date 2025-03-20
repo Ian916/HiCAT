@@ -115,6 +115,7 @@ HiCAT default visualized the top five HORs with repeat numbers greater than 10 i
 Custom visualization can use visualization.py
 -r is HiCAT result directory. e.g. ./HiCAT_out
 -s is which similarity be visualized. For example, 0 represents 0.94, 1 represents 0.945 and 2 represents 0.95 in default.
+-m is the moddotplot software output bed file. NOT required. If the parameter is not provided, the triangular heatmap will not be generated.
 -sp is the number of top HORs. default is 5.
 -sn is the minimum repeat number of HOR. default is 10.
 ```
@@ -131,6 +132,7 @@ Custom can use getSingleSimilarityResult.py
 ## Update
 ```Bash
 + 2023.03.29: adding the strand information in output. strand is defined by compared with input template DNA sequence.
++ 2025.03.21: The hierarchical tandem repeat mining method has been updated, improving the continuity and coverage of the results. The visualization section has also been enhanced with the addition of triangular heatmaps.
 ```
 
 

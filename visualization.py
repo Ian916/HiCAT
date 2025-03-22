@@ -253,39 +253,6 @@ def readModPlot(file):
         '12': '#8a0033'
     }
 
-    # color_map = {
-    #     71: '#4b3991',
-    #     72: '#4b3991',
-    #     73: '#4b3991',
-    #     74: '#4b3991',
-    #     75: '#4b3991',
-    #     76: '#4b3991',
-    #     77: '#4b3991',
-    #     78: '#4b3991',
-    #     79: '#4b3991',
-    #     80: '#4b3991',
-    #     81: '#2974af',
-    #     82: '#2974af',
-    #     83: '#2974af',
-    #     84: '#2974af',
-    #     85: '#2974af',
-    #     86: '#2974af',
-    #     87: '#2974af',
-    #     88: '#2974af',
-    #     89: '#2974af',
-    #     90: '#2974af',
-    #     91: '#4a9da8',
-    #     92: '#57b894',
-    #     93: '#9dd893',
-    #     94: '#e1f686',
-    #     95: '#ffffb2',
-    #     96: '#fdda79',
-    #     97: '#fb9e4f',
-    #     98: '#ee5634',
-    #     99: '#c9273e',
-    #     100: '#8a0033'
-    # }
-
     block_table = {}
     with open(file, 'r') as f:
         f.readline()
@@ -322,7 +289,7 @@ def readModPlot(file):
 
     return all_block_table
 
-def Plot(base_sequence, all_block_table, patterns,pattern_static, block_seuqence, outdir, show_number = 5, show_min_repeat_number = 10):
+def Plot(base_sequence, all_block_table, window_size, patterns,pattern_static, block_seuqence, outdir, show_number = 5, show_min_repeat_number = 10):
     fig, ax = plt.subplots(figsize=(10, 10))
     base_sequence_len = len(base_sequence)
     color = '#D14524'
@@ -364,7 +331,7 @@ def Plot(base_sequence, all_block_table, patterns,pattern_static, block_seuqence
     # # 如果没给出modplot文件就不画了
     if len(all_block_table.keys()) != 0:
         # 继续添加菱形三角，起点
-        window_size = 5000  # 同一排加每个2500，跨排起点横移5000
+        window_size = window_size  # 同一排加每个2500，跨排起点横移5000
         col_index = 0
 
         for i in all_block_table.keys():
@@ -476,7 +443,7 @@ def readAllLayer(all_layer_file):
     return all_layer
 
 
-def getResult(base_sequence, all_block_table, outdir,similarity,show_hor_number,show_hor_min_repeat_number):
+def getResult(base_sequence, all_block_table, outdir,similarity, window_size, show_hor_number,show_hor_min_repeat_number):
     outdir_best = outdir + '/out'
     if not os.path.exists(outdir_best):
         os.mkdir(outdir_best)
@@ -539,7 +506,7 @@ def getResult(base_sequence, all_block_table, outdir,similarity,show_hor_number,
                     else:
                         all_layer[seq] = [[int(start), int(end), '+', td_monomer_pattern, int(count)]]
 
-    Plot(base_sequence, all_block_table, all_layer, pattern_static, block_sequence, outdir_best,
+    Plot(base_sequence, all_block_table, window_size, all_layer, pattern_static, block_sequence, outdir_best,
          show_number=show_hor_number, show_min_repeat_number=show_hor_min_repeat_number)
 
     monomer_table = readCluster(cluster_file)
@@ -621,6 +588,7 @@ def main():
     parser.add_argument("-r", "--result_dir")
     parser.add_argument("-s", "--similarity")
     parser.add_argument("-m", "--moddotplot_file", required=False, default="")
+    parser.add_argument("-w", "--window_size", required=False, type=int, default=5000)
     parser.add_argument("-sp", "--show_hor_number", type=int, default=5)
     parser.add_argument("-sn", "--show_hor_min_repeat_number", type=int, default=10)
     args = parser.parse_args()
@@ -629,6 +597,7 @@ def main():
     similarity = args.similarity
 
     moddotplot_file = args.moddotplot_file
+    window_size = args.window_size
 
     show_hor_number = args.show_hor_number
     show_hor_min_repeat_number = args.show_hor_min_repeat_number
@@ -645,7 +614,7 @@ def main():
     if moddotplot_file != '':
         all_block_table = readModPlot(moddotplot_file)
 
-    getResult(base_sequence, all_block_table, result_dir, similarity, show_hor_number, show_hor_min_repeat_number)
+    getResult(base_sequence, all_block_table, result_dir, similarity, window_size, show_hor_number, show_hor_min_repeat_number)
 
 
 

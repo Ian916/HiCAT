@@ -121,7 +121,7 @@ Custom visualization can use visualization.py
 -sn is the minimum repeat number of HOR. default is 10.
 ```
 The triangle heatmap example on CHM13 centromere 21 is as following:
-![example](testdata/cen21_3000.png)
+![example](testdata/cen21.png)
 ![region_color](./region_color.png)
 HiCAT default output the largest HOR coverage results. e.g. ./HiCAT_out/out
 
